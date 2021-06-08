@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"          
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Sobre</title>
+    </h:head>
+    <h:body>
+        Curso IFSUL
+        <br/>
+        <h:form>
+            <h:commandLink value="Início..." action="#{controleIndex.index()}"/>
+            <br/>
+            <h:messages/>
+            <h:panelGrid columns="2">            
+
+                <h:outputLabel value="Nome"/>
+                <h:inputText value="#{controleFormulario.nome}" size="10" maxlength="10" validatorMessage="Nome maior que 10"
+                             />
+
+                <h:outputLabel value="Email"/>
+                <h:inputText value="#{controleFormulario.email}" size="50" validatorMessage="Email maior que 50"/>
+
+                <h:outputLabel value="Data Nascimento"/>
+                <h:inputText value="#{controleFormulario.nascimento}" size="12" validatorMessage="Data maior q limite">
+                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" type="localDate"/>
+                </h:inputText>
+            </h:panelGrid>
+            <h:commandButton value="Executar" action="#{controleFormulario.processarFormulario()}"/>
+            <br/><hr/> <br/>
+
+            <b> AJAX </b>
+            <h:panelGrid columns="2">
+                <h:outputLabel value="Número 1"/>
+                <h:inputText value="#{controleAjax.num1}" id="txtNum1"/>
+                <h:outputLabel value="Número 2"/>
+                <h:inputText value="#{controleAjax.num2}" id="txtNum2"/>   
+                <h:outputLabel value="Resultado = "/>
+                <h:outputText value="#{controleAjax.resultado}" id="txtResultado1"/>
+                <h:commandButton value="Somar" actionListener="#{controleAjax.somar()}">
+                    <f:ajax execute="txtNum1 txtNum2" render="txtResultado1 txtNum1 txtNum2"/>
+                </h:commandButton>
+                <p:commandButton value="Somar" action="#{controleAjax.somar()}"
+                                 update="@form" process="@form"/>
+            </h:panelGrid>
+
+            <br/>
+
+
+        </h:form>
+    </h:body>
+</html>
+
