@@ -34,7 +34,7 @@
                     <p:commandButton value="Proximo" actionListener="#{controleEstado.dao.proximo()}" icon="ui-icon-seek-next" update="listagem"/>
                     <p:commandButton value="Ultimo" actionListener="#{controleEstado.dao.ultimo()}" icon="ui-icon-seek-end" update="listagem"/>
                 </p:panelGrid>
-                <p:dataTable value="#{controleEstado.dao.listaObjetos}" var="obj" id="listagem">
+                <p:dataTable value="#{controleEstado.dao.listaPaginada}" var="obj" id="listagem">
                     <f:facet name="footer">
                         <p:outputLabel value="#{controleEstado.dao.mensagemNavegacao}"/>
                     </f:facet>

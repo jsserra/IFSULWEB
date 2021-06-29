@@ -5,7 +5,7 @@
  */
 package br.ifsul.dao;
 
-import br.ifsul.model.Estado;
+import br.ifsul.model.Cidade;
 import br.ifsul.util.Util;
 import java.io.Serializable;
 import java.util.List;
@@ -17,44 +17,40 @@ import javax.persistence.EntityManager;
  *
  * @author JSF
  */
-public class EstadoDao extends Paginacao implements Serializable {
+public class CidadeDao extends Paginacao implements Serializable {
 
     @Inject
     EntityManager em;
 
-    private DAOGenerico<Estado> dao;
+    private DAOGenerico<Cidade> dao;   
     
-    public String ordem = "id";
+    public String ordem = "nome";
 
     @PostConstruct
-    void start() {
-        this.dao = new DAOGenerico<>(this.em, Estado.class);
+    void start() {        
+        this.dao = new DAOGenerico<>(this.em, Cidade.class);
     }
-
-    public boolean persiste(Estado estado) {
+    
+    
+    public boolean persistir(Cidade cidade) {
         boolean persistiu = false;
-        if (estado.getId() == null) {
-            if (dao.persist(estado)) {
-                persistiu = dao.persist(estado);
-                Util.mensagemInformacao(dao.getMensagem());
-            } else {
-                Util.mensagemErro(dao.getMensagem());
-            }
+        if(cidade.getId() == null){
+            persistiu = dao.persist(cidade);
         } else {
-            if (dao.merge(estado)) {
-                persistiu = dao.merge(estado);
-                Util.mensagemInformacao(dao.getMensagem());
-            } else {
-                Util.mensagemErro(dao.getMensagem());
-            }
+            persistiu = dao.merge(cidade);
+        }
+        if (persistiu) {
+            Util.mensagemInformacao(dao.getMensagem());
+        } else {
+            Util.mensagemErro(dao.getMensagem());
         }
         return persistiu;
     }
-
-    public boolean remove(Estado estado) {
+    
+    public boolean remover(Cidade cidade){
         boolean remover = false;
-        if(dao.remove(estado)){
-            remover = dao.remove(estado);
+        if(dao.remove(cidade)){
+            remover = true;
             Util.mensagemInformacao(dao.getMensagem());
         }else{
             Util.mensagemErro(dao.getMensagem());
@@ -62,13 +58,25 @@ public class EstadoDao extends Paginacao implements Serializable {
         return remover;
     }
     
-    public List<Estado> getListaTodos() {
-         return dao.getListaTodos();
+    public Cidade localizar(Integer id){
+        return dao.localizar(id);
     }
-
-    //Método que retorna a consulta páginada
-    public List<Estado> getListaPaginada() {
-        String jpql = "from Estado";
+    
+    public List<Cidade> getListaTodos(){        
+        return dao.getListaTodos();
+    }
+    
+    public List<Cidade> getListarCidade() throws Exception{
+        List<Cidade> lista = null;
+        em.getTransaction().begin();
+        lista = em.createQuery("from Cidade").getResultList(); //dao.listarAll(); 
+        em.getTransaction().commit();
+        return  lista;
+    }
+    
+        //Método que retorna a consulta páginada
+    public List<Cidade> getListaPaginada() {
+        String jpql = "from Cidade";
         String where = "";
         filtro = filtro.replaceAll("[';-]", "");//se tiver algum dos caracateres entre conchetes vai alterar para string vazio
         if (filtro.length() > 0) {
@@ -87,12 +95,6 @@ public class EstadoDao extends Paginacao implements Serializable {
         jpql += " order by " + ordem;
         totalObjetos = em.createQuery(jpql).getResultList().size();
         return em.createQuery(jpql).setFirstResult(posicaoAtual).setMaxResults(maximoObjetos).getResultList();
-    }
-    
-    
-    
-    public Estado localizar(Integer id){
-        return dao.localizar(id);
     }
 
     public String getOrdem() {

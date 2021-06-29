@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 public class Paginacao implements Serializable {
     
-    public String ordem = "id";
+
     public String filtro = "";
     public Integer maximoObjetos = 8;
     public Integer posicaoAtual = 0;
@@ -56,14 +56,6 @@ public class Paginacao implements Serializable {
         return "Listando de " + (posicaoAtual + 1) + " até " + ate + " de " + totalObjetos + " registros";
     }
 
-    public String getOrdem() {
-        return ordem;
-    }
-
-    public void setOrdem(String ordem) {
-        this.ordem = ordem;
-    }
-
     public String getFiltro() {
         return filtro;
     }
@@ -95,6 +87,7 @@ public class Paginacao implements Serializable {
     public void setTotalObjetos(Integer totalObjetos) {
         this.totalObjetos = totalObjetos;
     }
+    
     
     
     

@@ -17,9 +17,11 @@
                     <p:megaMenu>
                         <p:submenu  label="Cadastros">
                             <p:column>                                
-                                <p:submenu label="Basicos">
-                                    <p:menuitem action="#{controlePais.listar()}" value="Manutenção de Paises" ajax="false"/>
-                                    <p:menuitem action="#{controleEstado.listar()}" value="Manutenção de Estados" ajax="false"/>
+                                <p:submenu label="CreateReadUpdateDelete">
+                                    <p:menuitem action="#{controleCidade.listar()}" value="Cidades" ajax="false"/>
+                                    <p:menuitem action="#{controleEstado.listar()}" value="Estados" ajax="false"/>
+                                    <p:menuitem action="#{controlePais.listar()}" value="Paises" ajax="false"/>
+                                    <p:menuitem action="#{controlePessoaFisica.listar()}" value="Pessoa Física" ajax="false"/>
                                 </p:submenu>
                             </p:column>
                         </p:submenu>
