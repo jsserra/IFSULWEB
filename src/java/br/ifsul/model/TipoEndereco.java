@@ -34,7 +34,7 @@ public class TipoEndereco implements Serializable {
     @NotBlank(message = "A descricao deve ser informada")
     @Length(max = 30, message = "A decricao não pode ter mais de {max} caracteres")
     @NotNull(message = "A descrição não pode ser nula")
-    @Column(name = "descricao", length = 30, nullable = false)    
+    @Column(name = "nome", length = 30, nullable = false)    
     private String descricao;  
     
     public TipoEndereco(){

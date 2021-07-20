@@ -17,7 +17,7 @@ import javax.persistence.EntityManager;
  *
  * @author JSF
  */
-public class TipoEnderecoDao<T> extends Paginacao implements Serializable{
+public class TipoEnderecoDao extends Paginacao implements Serializable{
     
     @Inject
     EntityManager em;
@@ -30,7 +30,11 @@ public class TipoEnderecoDao<T> extends Paginacao implements Serializable{
     }
     
     public List<TipoEndereco> getListaTodos(){
-        return dao.listaTodos;
+        return dao.getListaTodos();
+    }
+    
+    public TipoEndereco localizar(Integer id){
+        return dao.localizar(id);
     }
 
 

@@ -57,7 +57,7 @@ public class Pessoa implements Serializable {
     
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY) 
     //O mappedBy é o nome do atributo que faz referência a pessoa na classe Endereco (private Pessoa pessoa) e não idpessoa (@JoinColumn(name = "idpessoa") 
-    List<Endereco> enderecos = new ArrayList<>();
+    private List<Endereco> enderecos = new ArrayList<>();
 
     public Pessoa() {
     }
@@ -102,6 +102,16 @@ public class Pessoa implements Serializable {
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
+
+    public List<Endereco> getEnderecos() {
+        return enderecos;
+    }
+
+    public void setEnderecos(List<Endereco> enderecos) {
+        this.enderecos = enderecos;
+    }
+    
+    
 
     @Override
     public int hashCode() {

@@ -76,6 +76,11 @@ public class Endereco implements Serializable {
     @JoinColumn(name = "idtipoendereco", referencedColumnName = "id", nullable = false)
     private TipoEndereco tipoEndereco;
 
+    @ManyToOne
+    @JoinColumn(name = "cidade", referencedColumnName = "id", nullable = false)
+    private Cidade cidade;
+    
+    
     public Endereco() {
     }
 
@@ -157,6 +162,14 @@ public class Endereco implements Serializable {
 
     public void setTipoEndereco(TipoEndereco tipoEndereco) {
         this.tipoEndereco = tipoEndereco;
+    }
+
+    public Cidade getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(Cidade cidade) {
+        this.cidade = cidade;
     }
 
 }

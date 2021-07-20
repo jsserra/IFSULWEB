@@ -7,8 +7,12 @@ package br.ifsul.bean;
 
 import br.ifsul.dao.CidadeDao;
 import br.ifsul.dao.PessoaFisicaDao;
+import br.ifsul.dao.TipoEnderecoDao;
+import br.ifsul.model.Cidade;
+import br.ifsul.model.Endereco;
 import br.ifsul.model.PessoaFisica;
 import br.ifsul.model.TipoEndereco;
+import br.ifsul.util.Util;
 import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -24,47 +28,28 @@ public class ControlePessoaFisica implements Serializable {
 
     @Inject
     private PessoaFisicaDao<PessoaFisica> dao;
-    
+
     @Inject
     private CidadeDao daoCidade;
-    
+
     @Inject
-    private TipoEndereco daoTipoEndereco;
-    
+    private TipoEnderecoDao daoTipoEndereco;
+
     private PessoaFisica objeto;
+    private Endereco endereco = null;
+    private Boolean novoEndereco;
+    private Cidade cidade = null;
+    private Integer cidadeId;
+    private TipoEndereco tipoEndereco = null;
+    private Integer tipoEnderecoId;
+
 
     /*public ControlePessoaFisica(PessoaFisicaDao dao, CidadeDao daoCidade, TipoEndereco daoTipoEndereco) {
         this.dao = dao;
         this.daoCidade = daoCidade;
         this.daoTipoEndereco = daoTipoEndereco;
     }*/
-    
-
-    public String listar() {
-        return "/privado/pessoaFisica/listar?faces-redirect=true";
-    }
-
-    public void novo() {
-        objeto = new PessoaFisica();
-    }
-
-    public void salvar() {
-        dao.persiste(objeto);
-    }
-
-    public String cancelar() {
-        return "listar?faces-redirect=true";
-    }
-
-    public void editar(Integer id) {
-        objeto = dao.localizar(id);
-    }
-
-    public void remover(Integer id) {
-        objeto = dao.localizar(id);
-        dao.remove(objeto);
-    }
-
+    //gets e setters    
     public CidadeDao getDaoCidade() {
         return daoCidade;
     }
@@ -73,11 +58,11 @@ public class ControlePessoaFisica implements Serializable {
         this.daoCidade = daoCidade;
     }
 
-    public TipoEndereco getDaoTipoEndereco() {
+    public TipoEnderecoDao getDaoTipoEndereco() {
         return daoTipoEndereco;
     }
 
-    public void setDaoTipoEndereco(TipoEndereco daoTipoEndereco) {
+    public void setDaoTipoEndereco(TipoEnderecoDao daoTipoEndereco) {
         this.daoTipoEndereco = daoTipoEndereco;
     }
 
@@ -96,7 +81,110 @@ public class ControlePessoaFisica implements Serializable {
     public void setDao(PessoaFisicaDao<PessoaFisica> dao) {
         this.dao = dao;
     }
-    
 
-    
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public Boolean getNovoEndereco() {
+        return novoEndereco;
+    }
+
+    public void setNovoEndereco(Boolean novoEndereco) {
+        this.novoEndereco = novoEndereco;
+    }
+
+    public Cidade getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(Cidade cidade) {
+        this.cidade = cidade;
+    }
+
+    public Integer getCidadeId() {
+        return cidadeId;
+    }
+
+    public void setCidadeId(Integer cidadeId) {
+        this.cidadeId = cidadeId;
+    }
+
+    public TipoEndereco getTipoEndereco() {
+        return tipoEndereco;
+    }
+
+    public void setTipoEndereco(TipoEndereco tipoEndereco) {
+        this.tipoEndereco = tipoEndereco;
+    }
+
+    public Integer getTipoEnderecoId() {
+        return tipoEnderecoId;
+    }
+
+    public void setTipoEnderecoId(Integer tipoEnderecoId) {
+        this.tipoEnderecoId = tipoEnderecoId;
+    }
+
+    //Métodos
+    public String listar() {
+        return "/privado/pessoaFisica/listar?faces-redirect=true";
+    }
+
+    public void novo() {
+        objeto = new PessoaFisica();
+    }
+
+    public void salvar() {
+
+        dao.persiste(objeto);
+    }
+
+    public String cancelar() {
+        return "listar?faces-redirect=true";
+    }
+
+    public void editar(Integer id) {
+        objeto = dao.localizar(id);
+    }
+
+    public void remover(Integer id) {
+        objeto = dao.localizar(id);
+        dao.remove(objeto);
+    }
+
+    public void novoEndereco() {
+        endereco = new Endereco();
+        novoEndereco = true;
+    }
+
+    public void alterarEndereco(int index) {
+        endereco = objeto.getEnderecos().get(index);
+        cidade = endereco.getCidade();
+        tipoEndereco = endereco.getTipoEndereco();
+        novoEndereco = false;
+    }
+
+    public void salvarEndereco() {
+        if (cidadeId != null) {
+            cidade = daoCidade.localizar(cidadeId);
+        }
+        endereco.setCidade(cidade);
+        if (tipoEnderecoId != null) {
+            tipoEndereco = daoTipoEndereco.localizar(tipoEnderecoId);
+        }
+        endereco.setTipoEndereco(tipoEndereco);
+        if (this.novoEndereco) {
+            objeto.adicionarEndereco(endereco);
+        }       
+    }
+
+    public void removerEndereco(int index) {
+        objeto.removerEndereco(index);
+        Util.mensagemInformacao("Enderecoremovido com sucesso");
+    }
 }
