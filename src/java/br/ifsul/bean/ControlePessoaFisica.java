@@ -7,10 +7,12 @@ package br.ifsul.bean;
 
 import br.ifsul.dao.CidadeDao;
 import br.ifsul.dao.PessoaFisicaDao;
+import br.ifsul.dao.ProdutoDao;
 import br.ifsul.dao.TipoEnderecoDao;
 import br.ifsul.model.Cidade;
 import br.ifsul.model.Endereco;
 import br.ifsul.model.PessoaFisica;
+import br.ifsul.model.Produto;
 import br.ifsul.model.TipoEndereco;
 import br.ifsul.util.Util;
 import java.io.Serializable;
@@ -34,6 +36,11 @@ public class ControlePessoaFisica implements Serializable {
 
     @Inject
     private TipoEnderecoDao daoTipoEndereco;
+    
+    @Inject
+    private ProdutoDao daoProduto;
+    
+    private Produto produto;
 
     private PessoaFisica objeto;
     private Endereco endereco = null;
@@ -129,6 +136,22 @@ public class ControlePessoaFisica implements Serializable {
     public void setTipoEnderecoId(Integer tipoEnderecoId) {
         this.tipoEnderecoId = tipoEnderecoId;
     }
+    
+        public ProdutoDao getDaoProduto() {
+        return daoProduto;
+    }
+
+    public void setDaoProduto(ProdutoDao daoProduto) {
+        this.daoProduto = daoProduto;
+    }
+
+    public Produto getProduto() {
+        return produto;
+    }
+
+    public void setProduto(Produto produto) {
+        this.produto = produto;
+    }
 
     //Métodos
     public String listar() {
@@ -157,6 +180,7 @@ public class ControlePessoaFisica implements Serializable {
         dao.remove(objeto);
     }
 
+    //ENDEREÇO
     public void novoEndereco() {
         endereco = new Endereco();
         novoEndereco = true;
@@ -187,4 +211,23 @@ public class ControlePessoaFisica implements Serializable {
         objeto.removerEndereco(index);
         Util.mensagemInformacao("Enderecoremovido com sucesso");
     }
+
+    //DESEJO
+    public void adicionarDesejo(){
+        if(produto != null){
+            if(!objeto.getDesejos().contains(produto)){
+                objeto.getDesejos().add(produto);
+                Util.mensagemInformacao("Desejo adicionado com sucesso!");
+            }else {
+                Util.mensagemErro("Este desejo já existe na sua lista!");
+            }
+        }
+    }
+    
+    public void removerDesejo(int index){
+        produto = objeto.getDesejos().get(index);
+        objeto.getDesejos().remove(produto);
+        Util.mensagemInformacao("Desejo removido com sucesso!");
+    }
+
 }

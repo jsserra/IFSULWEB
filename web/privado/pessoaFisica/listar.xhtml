@@ -172,7 +172,41 @@
                             </p:dataTable>
                         </p:tab>
                         <p:tab title="Desejos">
-
+                            <p:dataTable value="#{controlePessoaFisica.objeto.desejos}"
+                                         var="des" rowIndexVar="idxDes" id="listaDesejos">
+                                <f:facet name="header">
+                                    <p:panelGrid columns="2">
+                                        <p:selectOneMenu value="#{controlePessoaFisica.produto}"
+                                                         id="selectProduto">
+                                            <f:converter converterId="converterProduto"/> 
+                                            <f:selectItem noSelectionOption="true" itemLabel="Selecione um produto"/>
+                                            <f:selectItems value="#{controlePessoaFisica.daoProduto.listaTodos}"
+                                                           var="prod" itemLabel="#{prod.nome}"/>
+                                        </p:selectOneMenu>
+                                        <p:commandButton value="Adicionar"
+                                                         actionListener="#{controlePessoaFisica.adicionarDesejo()}"
+                                                         update="listaDesejos :formEdicao:growl"
+                                                         id="btnAdicionarDesejo"
+                                                         process="btnAdicionarDesejo selectProduto"
+                                                         icon="ui-icon-plus"/>
+                                    </p:panelGrid>
+                                </f:facet>
+                                <p:column headerText="Nome">
+                                    <p:outputLabel value="#{des.nome}"/>
+                                </p:column>
+                                <p:column headerText="Marca">
+                                    <p:outputLabel value="#{des.marca.nome}"/>
+                                </p:column>
+                                <p:column headerText="Ações">
+                                    <div align="center">
+                                        <p:commandButton id="btnRemoverDesejo"
+                                                         actionListener="#{controlePessoaFisica.removerDesejo(idxDes)}"
+                                                         process="btnRemoverDesejo" update="listaDesejos :formEdicao:growl"
+                                                         icon="ui-icon-trash"
+                                                         onclick="if(!confirm('Confirma a remoção do desejo?')) return false"/>
+                                    </div>
+                                </p:column>
+                            </p:dataTable>
                         </p:tab>
                     </p:tabView>
 
